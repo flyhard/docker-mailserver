@@ -1,4 +1,4 @@
-NAME = tvial/docker-mailserver
+NAME = flyhard/docker-mailserver
 VERSION = $(TRAVIS_BUILD_ID)
 
 all: build run prepare fixtures tests
@@ -11,6 +11,8 @@ run:
 	cp test/accounts.cf postfix/
 	cp test/virtual postfix/
 	# Run container
+	docker stop mail
+	docker rm mail
 	docker run -d --name mail -v "`pwd`/postfix":/tmp/postfix -v "`pwd`/spamassassin":/tmp/spamassassin -v "`pwd`/test":/tmp/test -h mail.my-domain.com -t $(NAME):$(VERSION)
 	sleep 15
 
