@@ -129,4 +129,4 @@ echo "Listing SASL users"
 sasldblistusers2
 
 echo "Starting..."
-tail -f /var/log/mail.log
+tail -F /var/log/syslog

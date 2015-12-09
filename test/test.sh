@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Set up test framework
-wget -q https://raw.github.com/lehmannro/assert.sh/master/assert.sh -O assert.sh
-source assert.sh
+source test/assert.sh
 
 # Testing that services are running
 assert_raises "docker exec mail ps aux --forest | grep '/usr/lib/postfix/master'" 0

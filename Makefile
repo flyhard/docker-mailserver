@@ -1,20 +1,24 @@
 NAME = flyhard/docker-mailserver
 VERSION = $(TRAVIS_BUILD_ID)
 
-all: build run prepare fixtures tests
+all: build run prepare fixtures tests stop
 
 build:
-	docker build --no-cache -t $(NAME):$(VERSION) . 
+	docker build -t $(NAME):$(VERSION) .
 
 run:
 	# Copy test files
-	cp test/accounts.cf postfix/
-	cp test/virtual postfix/
+	-rm -rf test-config
+	mkdir test-config
+	cp -ra postfix/* test-config/
+	cp test/accounts.cf test-config/
+	cp test/virtual test-config/
 	# Run container
-	docker stop mail
-	docker rm mail
-	docker run -d --name mail -v "`pwd`/postfix":/tmp/postfix -v "`pwd`/spamassassin":/tmp/spamassassin -v "`pwd`/test":/tmp/test -h mail.my-domain.com -t $(NAME):$(VERSION)
-	sleep 15
+	-docker stop mail
+	-docker rm mail
+	docker run -d --name mail -v "`pwd`/test-config":/tmp/postfix -v "`pwd`/spamassassin":/tmp/spamassassin -v \
+	"`pwd`/test":/tmp/test -h mail.my-domain.com -t $(NAME):$(VERSION)
+	docker exec mail /bin/sh -c "while ! echo QUIT |nc localhost 25; do sleep 2; done"
 
 prepare:
 	# Reinitialize logs 
@@ -34,3 +38,7 @@ fixtures:
 tests:
 	# Start tests
 	/bin/bash ./test/test.sh
+
+stop:
+	docker stop mail
+	docker rm mail
