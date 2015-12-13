@@ -1,0 +1,17 @@
+request=smtpd_access_policy
+protocol_state=RCPT
+protocol_name=ESMTP
+client_address=201.1.2.3
+client_name=imaspammer.brasiltelecom.net.br
+helo_name=imaspammerl.brasiltelecom.net.br
+sender=bogus@user.com
+recipient=poorfoool@somedomain.com
+queue_id=
+instance=66cf.46d5964c.0
+size=0
+sasl_method=
+sasl_username=
+sasl_sender=
+ccert_subject=
+ccert_issuer=
+ccert_fingerprint=

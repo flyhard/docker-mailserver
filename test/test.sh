@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set up test framework
-source test/assert.sh
+source assert.sh
 
 # Testing that services are running
 assert_raises "docker exec mail ps aux --forest | grep '/usr/lib/postfix/master'" 0
@@ -46,6 +46,8 @@ assert "docker exec mail crontab -l" "0 1 * * * /usr/bin/freshclam --quiet"
 # Testing that log don't display errors
 assert_raises "docker exec mail grep 'non-null host address bits in' /var/log/mail.log" 1
 assert_raises "docker exec mail grep ': error:' /var/log/mail.log" 1
+
+assert_raises ""
 
 # Ending tests
 assert_end 

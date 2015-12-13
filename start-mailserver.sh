@@ -114,16 +114,17 @@ echo "rewrite_header Subject ***SPAM***" >> /etc/mail/spamassassin/local.cf
 cp /tmp/spamassassin/rules.cf /etc/spamassassin/
 
 echo "Starting daemons"
-cron
-/etc/init.d/rsyslog start
-/etc/init.d/saslauthd start
-/etc/init.d/courier-authdaemon start
-/etc/init.d/courier-imap start
-/etc/init.d/courier-imap-ssl start
-/etc/init.d/spamassassin start
-/etc/init.d/clamav-daemon start
-/etc/init.d/amavis start
-/etc/init.d/postfix start
+service cron start
+service rsyslog start
+service saslauthd start
+service courier-authdaemon start
+service courier-imap start
+service courier-imap-ssl start
+service spamassassin start
+service clamav-daemon start
+service amavis start
+service postfix start
+service postgrey start
 
 echo "Listing SASL users"
 sasldblistusers2
