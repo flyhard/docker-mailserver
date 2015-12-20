@@ -14,8 +14,14 @@ run:
 	# Run container
 	-docker stop mail
 	-docker rm mail
-	docker run -d --name mail -v "`pwd`/test-config":/tmp/postfix -v "`pwd`/../spamassassin":/tmp/spamassassin -v \
-	"`pwd`":/tmp/test -h mail.my-domain.com -t $(NAME):$(VERSION)
+	docker run -d --name mail -h mail.my-domain.com -t $(NAME):$(VERSION)
+	docker cp test-config mail:/tmp/postfix
+	docker cp ../spamassassin mail:/tmp/spamassassin
+	docker exec mail mkdir /tmp/test
+	docker cp email-templates mail:/tmp/test/email-templates
+	docker cp postgrey mail:/tmp/test/postgrey
+	docker stop mail
+	docker start mail
 
 prepare: run
 	docker exec mail /bin/sh -c "while ! echo QUIT |nc localhost 25; do sleep 2; done"
